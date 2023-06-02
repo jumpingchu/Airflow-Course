@@ -40,3 +40,44 @@ Notes and codes of following along with Marc Lamberti's course: "The Complete Ha
 5. Define a scheduled interval
 6. Define the catchup parameter
 
+## Create connections
+
+| Connection | Information |
+| ---- | ---- |
+| Connection Id | `postgres`|
+| Connection Type | `postgres`|
+| Host | `postgres`|
+| Login | `airflow`|
+| Password | `airflow`|
+
+| Add Connection | Information |
+| ---- | ---- |
+| Connection Id | `user_api`|
+| Connection Type | `HTTP`|
+| Host | `https://randomuser.me/`|
+
+## DAGs
+
+### `user_process`
+
+![user_process](images/user_process.png)
+
+Practice point:
+- PostgresOperator
+- HttpSensor
+- SimpleHttpOperator
+- PythonOperator
+
+### `producer`, `consumer`
+
+![Datasets_my_file](images/Datasets_my_file.png)
+
+Practice point:
+- Datasets
+  - If one task succeeded, another DAG which depends on `my_file` dataset will be triggered!
+- Also can wait for multiple files by `DAG(schedule=[my_file, my_file_2])`
+- Limitations:
+  - Consumer DAGs are triggered every time a task that updates datasets completes successfully. Airflow doesn't check whether the data has been effectively updated.
+  - You can't combine different schedules like datasets with cron expressions.
+  - If two tasks update the same dataset, as soon as one is done, that triggers the Consumer DAG immediately without waiting for the second task to complete.
+  - Airflow monitors datasets only within the context of DAGs and Tasks. If an external tool updates the actual data represented by a Dataset, Airflow has no way of knowing that.
