@@ -37,7 +37,8 @@ with DAG(
     dag_id='user_processing', 
     start_date=datetime(2023, 4, 28), 
     schedule_interval='@daily',
-    catchup=False
+    catchup=False,
+    tags=["course"]
 ) as dag:
     create_table = PostgresOperator(
         task_id='create_table',
