@@ -1,5 +1,7 @@
 # Airflow-Course
-Notes and codes of following along with Marc Lamberti's course: "*The Complete Hands-On Introduction to Apache Airflow*" on Udemy
+Notes and codes of following along with Marc Lamberti's course: "*[The Complete Hands-On Introduction to Apache Airflow](https://www.udemy.com/course/the-complete-hands-on-course-to-master-apache-airflow/)*" on Udemy
+
+![course_cover](images/course_cover.png)
 
 - [Airflow-Course](#airflow-course)
   - [Section 2: Getting Started Wtih Airflow](#section-2-getting-started-wtih-airflow)
@@ -12,6 +14,10 @@ Notes and codes of following along with Marc Lamberti's course: "*The Complete H
     - [DAG: `producer`, `consumer`](#dag-producer-consumer)
   - [Section 6: Databases and Executors](#section-6-databases-and-executors)
     - [Executors](#executors)
+      - [Sequential Executor](#sequential-executor)
+      - [Local Executor](#local-executor)
+      - [CeleryExecutor:](#celeryexecutor)
+      - [Check what executor you are using](#check-what-executor-you-are-using)
 
 ---
 ## Section 2: Getting Started Wtih Airflow
@@ -99,27 +105,34 @@ Practice point:
 ## Section 6: Databases and Executors
 
 ### Executors
+An Executor doesn't execute tasks, only defines HOW to run tasks (on which system).
 
-- An Executor doesn't execute tasks, only defines HOW to run tasks (on which system).
-- Examples: 
-  - Local Executors
-    - Local Executor
-    - Sequential Executor
-  - Remote Executors
-    - Celery Executor
-    - Dask Executor
-    - Kubernetes Executor
-- To check what executor you are using in `airflow.cfg`:
+#### Sequential Executor 
+- Run 1 task at a time
+- Use SQLite Database
+- SQLite only accept 1 writer at a time. (but unlimited readers)
+  - That's why we can't use SQLite database with local executors or celery executors.
+- Helpful to use it during debugging process.
+
+#### Local Executor
+-  Run multiple tasks at a time on 1 machine. (Parallelism)
+-  Use PostgreSQL, MySQL...(but not SQLite)
+
+#### CeleryExecutor: 
+- Run multiple tasks at the same time on multiple machines. (Parallelism)
+- `RESULT_BACKEND=postgreSQL`: Stores states of tasks which have been executed.
+- `BROKER=redis`: The task queue sent by Scheduler for workers to execute.
+- Can manage and monitor by Flower. To start Flower:
+  ```bash
+  docker compose down && docker compose --profile flower up -d
+  ```
+  ![flower](images/flower.png)
+
+#### Check what executor you are using
+- In `airflow.cfg`:
   ```bash
   docker cp airflow-course-airflow-scheduler-1:/opt/airflow/airflow.cfg .
   ```
-  - BUT `docker-compose.yml` will override `airflow.cfg` configurations.
-  - Example: `AIRFLOW__CORE__EXECUTOR: CeleryExecutor` means setting Airflow config section `[core]`'s `EXECUTOR` value to `CeleryExecutor`
-- CeleryExecutor: Execute multiple tasks at the same time.
-  - `RESULT_BACKEND=postgreSQL`: Stores task state.
-  - `BROKER=redis`: The task queue put by Scheduler for workers to execute.
-  - Can manage and monitor by Flower. To start Flower:
-    ```bash
-    docker compose down && docker compose --profile flower up -d
-    ```
-    ![flower](images/flower.png)
+- BUT `docker-compose.yml` will override `airflow.cfg` configurations.
+- Example: `AIRFLOW__CORE__EXECUTOR: CeleryExecutor` means setting Airflow config section `[core]`'s `EXECUTOR` value to `CeleryExecutor`
+
