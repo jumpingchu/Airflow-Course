@@ -8,9 +8,9 @@ Notes and codes of following along with Marc Lamberti's course: "*The Complete H
     - [Steps to write a DAG](#steps-to-write-a-dag)
     - [Create connections](#create-connections)
     - [DAG: `user_process`](#dag-user_process)
-  - [The New Way of Scheduling DAGs](#the-new-way-of-scheduling-dags)
+  - [Section 5: The New Way of Scheduling DAGs](#section-5-the-new-way-of-scheduling-dags)
     - [DAG: `producer`, `consumer`](#dag-producer-consumer)
-  - [Databases and Executors](#databases-and-executors)
+  - [Section 6: Databases and Executors](#section-6-databases-and-executors)
     - [Executors](#executors)
 
 ---
@@ -81,7 +81,7 @@ Practice point:
 - SimpleHttpOperator
 - PythonOperator
 
-## The New Way of Scheduling DAGs
+## Section 5: The New Way of Scheduling DAGs
 ### DAG: `producer`, `consumer`
 
 ![Datasets_my_file](images/Datasets_my_file.png)
@@ -96,7 +96,7 @@ Practice point:
   - If two tasks update the same dataset, as soon as one is done, that triggers the Consumer DAG immediately without waiting for the second task to complete.
   - Airflow monitors datasets only within the context of DAGs and Tasks. If an external tool updates the actual data represented by a Dataset, Airflow has no way of knowing that.
 
-## Databases and Executors
+## Section 6: Databases and Executors
 
 ### Executors
 
@@ -115,7 +115,6 @@ Practice point:
   ```
   - BUT `docker-compose.yml` will override `airflow.cfg` configurations.
   - Example: `AIRFLOW__CORE__EXECUTOR: CeleryExecutor` means setting Airflow config section `[core]`'s `EXECUTOR` value to `CeleryExecutor`
-
 - CeleryExecutor: Execute multiple tasks at the same time.
   - `RESULT_BACKEND=postgreSQL`: Stores task state.
   - `BROKER=redis`: The task queue put by Scheduler for workers to execute.
