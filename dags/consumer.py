@@ -10,7 +10,6 @@ with DAG(
     schedule=[my_file, my_file_2],
     start_date=datetime(2023, 6, 1),
     catchup=False,
-    tags=["course"]
 ):
     @task
     def read_dataset():

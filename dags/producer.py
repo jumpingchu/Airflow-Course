@@ -10,7 +10,6 @@ with DAG(
     schedule='@daily',
     start_date=datetime(2023, 6, 1),
     catchup=False,
-    tags=["course"]
 ):
     @task(outlets=[my_file])  # If this task succeeded, DAGs depends on `my_file` dataset will be triggered!
     def update_dataset():
