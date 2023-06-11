@@ -18,6 +18,9 @@ Notes and codes of following along with Marc Lamberti's course: "*[The Complete 
       - [Local Executor](#local-executor)
       - [CeleryExecutor:](#celeryexecutor)
       - [Check what executor you are using](#check-what-executor-you-are-using)
+  - [Section 7： Implementing Advanced Concepts in Airflow](#section-7-implementing-advanced-concepts-in-airflow)
+    - [Subdags](#subdags)
+      - [DAGs: `group_dag`, `subdags/subdag_downloads.py`, `subdags/subdag_transforms.py`](#dags-group_dag-subdagssubdag_downloadspy-subdagssubdag_transformspy)
 
 ---
 ## Section 2: Getting Started Wtih Airflow
@@ -136,3 +139,20 @@ An Executor doesn't execute tasks, only defines HOW to run tasks (on which syste
 - BUT `docker-compose.yml` will override `airflow.cfg` configurations.
 - Example: `AIRFLOW__CORE__EXECUTOR: CeleryExecutor` means setting Airflow config section `[core]`'s `EXECUTOR` value to `CeleryExecutor`
 
+## Section 7： Implementing Advanced Concepts in Airflow
+
+### Subdags
+
+- Can group dags with same logic into one subdag
+- Easier to read and maintain
+
+Before using subdag
+![subdag_before](images/subdag_before.png)
+
+After using subdag
+![subdag_after](images/subdag_after.png)
+
+#### DAGs: `group_dag`, `subdags/subdag_downloads.py`, `subdags/subdag_transforms.py`
+
+Practice point:
+- SubDagOperator
