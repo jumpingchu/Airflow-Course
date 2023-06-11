@@ -146,8 +146,11 @@ An Executor doesn't execute tasks, only defines HOW to run tasks (on which syste
 - Can group dags with same logic into one subdag
 - Easier to read and maintain
 - Before using subdag
+  
   ![subdag_before](images/subdag_before.png)
+
 - After using subdag
+
   ![subdag_after](images/subdag_after.png)
 
 #### DAGs: `group_dag`, `subdags/subdag_downloads.py`, `subdags/subdag_transforms.py`
